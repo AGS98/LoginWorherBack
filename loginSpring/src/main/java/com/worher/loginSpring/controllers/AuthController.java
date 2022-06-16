@@ -47,6 +47,13 @@ public class AuthController {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
 		
+		
+		if (authentication == null) {
+			return ResponseEntity
+					.badRequest()
+					.body(new MessageResponse("La contraseña y el email no coinciden"));
+		}
+		
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 		return ResponseEntity.ok(new JwtResponse(
 				jwt, 
